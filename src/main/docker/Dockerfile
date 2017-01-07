@@ -1,0 +1,6 @@
+FROM registry.cn-hangzhou.aliyuncs.com/syl/ubuntu_14_jdk_8
+VOLUME /tmp
+ADD bench-demo-0.1.0.jar app.jar
+RUN bash -c 'touch /app.jar'
+EXPOSE 8080
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
