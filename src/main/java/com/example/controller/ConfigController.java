@@ -21,4 +21,9 @@ public class ConfigController {
     public Map<String,Object> getServerConfigs(){
         return embeddedTomcatConfig.getAttributes();
     }
+
+    @RequestMapping("/hello")
+    public String hello(){
+        return "hello";
+    }
 }
