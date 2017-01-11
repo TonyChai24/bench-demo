@@ -12,7 +12,6 @@ import org.springframework.boot.context.embedded.tomcat.TomcatConnectorCustomize
 import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.stereotype.Component;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,9 +20,9 @@ import java.util.Map;
  * Created by patterncat on 2017-01-04.
  */
 @Component
-public class EmbeddedTomcatConfig implements EmbeddedServletContainerCustomizer {
+public class EmbeddedServerConfig implements EmbeddedServletContainerCustomizer {
 
-    private static final Logger logger = LoggerFactory.getLogger(EmbeddedTomcatConfig.class);
+    private static final Logger logger = LoggerFactory.getLogger(EmbeddedServerConfig.class);
 
     private Map<String,Object> attributes = new HashMap<>();
 
@@ -38,8 +37,8 @@ public class EmbeddedTomcatConfig implements EmbeddedServletContainerCustomizer 
                     logger.info("handler:{}",handler.getClass().getName());
 
                     //todo test
-                    connector.setAttribute("maxThreads",400);
-                    connector.setAttribute("acceptCount",400);
+//                    connector.setAttribute("maxThreads",400);
+//                    connector.setAttribute("acceptCount",400);
 
                     logger.info("====== tomcat protocol config start ======");
                     Http11NioProtocol http11NioProtocol = (Http11NioProtocol)handler;
