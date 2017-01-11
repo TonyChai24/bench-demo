@@ -50,33 +50,32 @@ Document Path:          /config/hello
 Document Length:        5 bytes
 
 Concurrency Level:      1000
-Time taken for tests:   17.406 seconds
+Time taken for tests:   14.631 seconds
 Complete requests:      15000
-Failed requests:        2206
-   (Connect: 0, Receive: 1103, Length: 1103, Exceptions: 0)
-Total transferred:      2431975 bytes
-HTML transferred:       69485 bytes
-Requests per second:    861.75 [#/sec] (mean)
-Time per request:       1160.428 [ms] (mean)
-Time per request:       1.160 [ms] (mean, across all concurrent requests)
-Transfer rate:          136.44 [Kbytes/sec] received
+Failed requests:        0
+Total transferred:      2340000 bytes
+HTML transferred:       75000 bytes
+Requests per second:    1025.20 [#/sec] (mean)
+Time per request:       975.419 [ms] (mean)
+Time per request:       0.975 [ms] (mean, across all concurrent requests)
+Transfer rate:          156.18 [Kbytes/sec] received
 
 Connection Times (ms)
               min  mean[+/-sd] median   max
-Connect:        1  359 168.3    333    2311
-Processing:    50  428 485.2    265   14074
-Waiting:        0  394 485.9    202   14074
-Total:        269  787 506.4    685   14580
+Connect:        1  439 658.2    152    4903
+Processing:     5  255 390.1    106    9433
+Waiting:        4  252 390.0    104    9433
+Total:         14  694 790.6    295   11970
 
 Percentage of the requests served within a certain time (ms)
-  50%    685
-  66%    838
-  75%    948
-  80%   1009
-  90%   1194
-  95%   1568
-  98%   1914
-  99%   2213
- 100%  14580 (longest request)
+  50%    295
+  66%    635
+  75%    973
+  80%   1341
+  90%   1697
+  95%   2430
+  98%   2806
+  99%   3292
+ 100%  11970 (longest request)
 
 ```

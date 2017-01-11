@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
-import org.springframework.boot.context.embedded.undertow.UndertowEmbeddedServletContainerFactory;
+import org.springframework.boot.context.embedded.jetty.JettyEmbeddedServletContainerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -22,7 +22,7 @@ public class EmbeddedServerConfig implements EmbeddedServletContainerCustomizer 
 
     @Override
     public void customize(ConfigurableEmbeddedServletContainer container) {
-        if(container instanceof UndertowEmbeddedServletContainerFactory){
+        if(container instanceof JettyEmbeddedServletContainerFactory){
 
         }
     }
