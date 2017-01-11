@@ -1,24 +1,47 @@
 # bench-demo
-##start
-mvn spring-boot:run
-##view config
-curl -i localhost:8080/config/tomcat
 
 ##docker
 ```
-docker run -p 8080:8080 --privileged -it bench-demo:0.1.0 /bin/bash
+docker build -t java8-htop .
+docker run -p 8080:8080 --rm -it bench-demo:0.1.0 /bin/bash
 ```
-##change open files
-```
-ulimit -n 1024000
-echo 6553560 > /proc/sys/fs/file-max
-```
-现在这个是运行时修改,需要启动--privileged
 
 ##wrk
+打满4个cpu
 ```
-wrk -t12 -c100 -d10s -T30s  --latency http://192.168.99.100:8080/config/hello
+wrk -t12 -c1000 -d10s -T30s  --latency http://192.168.99.100:8080/config/hello
+Running 10s test @ http://192.168.99.100:8080/config/hello
+  12 threads and 1000 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency   236.55ms  247.63ms   2.78s    91.98%
+    Req/Sec   453.18    201.01     1.12k    66.73%
+  Latency Distribution
+     50%  163.57ms
+     75%  232.43ms
+     90%  416.99ms
+     99%    1.45s
+  51082 requests in 10.09s, 7.60MB read
+  Socket errors: connect 0, read 63, write 0, timeout 0
+Requests/sec:   5063.39
+Transfer/sec:    771.38KB
 
+```
+配置200的maxThreads
+```
+wrk -t12 -c1000 -d10s -T30s  --latency http://192.168.99.100:8080/config/hello
+Running 10s test @ http://192.168.99.100:8080/config/hello
+  12 threads and 1000 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency   407.44ms  720.39ms   6.60s    90.78%
+    Req/Sec   398.96    169.89     0.94k    66.81%
+  Latency Distribution
+     50%  167.50ms
+     75%  281.66ms
+     90%    1.04s
+     99%    3.68s
+  46429 requests in 10.09s, 6.91MB read
+Requests/sec:   4599.56
+Transfer/sec:    700.71KB
 ```
 
 ##默认配置
