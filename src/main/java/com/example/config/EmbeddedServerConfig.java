@@ -37,8 +37,12 @@ public class EmbeddedServerConfig implements EmbeddedServletContainerCustomizer 
                     logger.info("handler:{}",handler.getClass().getName());
 
                     //todo test
-//                    connector.setAttribute("maxThreads",400);
-//                    connector.setAttribute("acceptCount",400);
+//                    connector.setAttribute("maxThreads",100);
+//                    connector.setAttribute("acceptCount",1000);
+//                    connector.setAttribute("keepAliveTimeout",2000);
+//                    connector.setAttribute("soTimeout",2000);
+//                    connector.setAttribute("connectionTimeout",2000);
+//                    connector.setAttribute("maxConnections",20000);
 
                     logger.info("====== tomcat protocol config start ======");
                     Http11NioProtocol http11NioProtocol = (Http11NioProtocol)handler;
