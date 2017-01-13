@@ -30,6 +30,7 @@ public class EmbeddedServerConfig implements EmbeddedServletContainerCustomizer 
     public void customize(ConfigurableEmbeddedServletContainer container) {
         if(container instanceof TomcatEmbeddedServletContainerFactory){
             TomcatEmbeddedServletContainerFactory factory = (TomcatEmbeddedServletContainerFactory)container;
+//            factory.setProtocol("org.apache.coyote.http11.Http11Nio2Protocol");
             factory.addConnectorCustomizers(new TomcatConnectorCustomizer() {
                 @Override
                 public void customize(Connector connector) {
@@ -37,7 +38,8 @@ public class EmbeddedServerConfig implements EmbeddedServletContainerCustomizer 
                     logger.info("handler:{}",handler.getClass().getName());
 
                     //todo test
-//                    connector.setAttribute("maxThreads",100);
+//                    connector.setAttribute("maxThreads",500);
+//                    connector.setAttribute("minSpareThreads",200);
 //                    connector.setAttribute("acceptCount",1000);
 //                    connector.setAttribute("keepAliveTimeout",2000);
 //                    connector.setAttribute("soTimeout",2000);
@@ -45,25 +47,25 @@ public class EmbeddedServerConfig implements EmbeddedServletContainerCustomizer 
 //                    connector.setAttribute("maxConnections",20000);
 
                     logger.info("====== tomcat protocol config start ======");
-                    Http11NioProtocol http11NioProtocol = (Http11NioProtocol)handler;
-                    Method[] methods = Http11NioProtocol.class.getMethods();
-                    for(Method m:methods){
-                        if(!m.getName().startsWith("get")){
-                            continue;
-                        }
-                        Class<?> methodParams[] = m.getParameterTypes();
-                        if(methodParams == null || methodParams.length == 0){
-                            Object value = null;
-                            try {
-                                value = m.invoke(http11NioProtocol);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                            String prop = StringUtils.uncapitalize(m.getName().substring(3));
-                            logger.info("property:{} value:{}",prop,value);
-                            attributes.put(prop,value);
-                        }
-                    }
+//                    Http11NioProtocol http11NioProtocol = (Http11NioProtocol)handler;
+//                    Method[] methods = Http11NioProtocol.class.getMethods();
+//                    for(Method m:methods){
+//                        if(!m.getName().startsWith("get")){
+//                            continue;
+//                        }
+//                        Class<?> methodParams[] = m.getParameterTypes();
+//                        if(methodParams == null || methodParams.length == 0){
+//                            Object value = null;
+//                            try {
+//                                value = m.invoke(http11NioProtocol);
+//                            } catch (Exception e) {
+//                                e.printStackTrace();
+//                            }
+//                            String prop = StringUtils.uncapitalize(m.getName().substring(3));
+//                            logger.info("property:{} value:{}",prop,value);
+//                            attributes.put(prop,value);
+//                        }
+//                    }
                     logger.info("====== tomcat protocol config end ======");
 
 //                    Object defaultMaxThreads = connector.getAttribute("maxThreads");
