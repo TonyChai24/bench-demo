@@ -1,6 +1,5 @@
 FROM java8-htop
 ENV JAVA_OPTS="\
--Xmx300m \
 -XX:+UseParallelGC \
 -XX:ParallelGCThreads=4 \
 -XX:+UseParallelOldGC \
