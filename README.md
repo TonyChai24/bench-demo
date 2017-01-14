@@ -3,8 +3,19 @@
 ```
 docker build -t java8-htop .
 mvn package -Dmaven.test.skip=true
-docker run -p 8080:8080 --rm -it bench-demo:0.1.0 /bin/bash
+docker run -p 8080:8080 -p 9090:9090 --rm -it bench-demo:0.1.0 /bin/bash
 ```
+##jmx
+- [Monitoring Java Applications Running Inside Docker Containers](http://www.jamasoftware.com/blog/monitoring-java-applications/)
+- [Monitoring Tomcat StandardThreadExecutor's queue size (MBean)](http://stackoverflow.com/questions/26073272/monitoring-tomcat-standardthreadexecutors-queue-size-mbean)
+- [JMX 标准MBean的开发应用](http://topmanopensource.iteye.com/blog/518415)
+##查看tomcat的线程池状态
+- 使用jolokia
+http://localhost:8080/jolokia/list
+- 查看tomcat的基本配置
+http://localhost:8080/jolokia/read/Tomcat:port=8080,type=ProtocolHandler
+http://localhost:8080/jolokia/read/Tomcat:type=Engine
+
 ##查看tcp链接
 - 查看accept队列默认大小
 ```
@@ -99,6 +110,7 @@ IpExt:
 ##doc
 - [TCP/IP协议中backlog参数](http://www.cnblogs.com/Orgliny/p/5780796.html?from=timeline)
 - [我就是认真，为了一个net.ipv4.tcp_tw_recycle参数](http://udn.yyuap.com/thread-99657-1-1.html)
+
 
 #测试数据
 ##wrk

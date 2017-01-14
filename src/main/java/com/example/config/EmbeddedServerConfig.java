@@ -1,9 +1,12 @@
 package com.example.config;
 
+import com.example.util.ReflectHelper;
 import org.apache.catalina.connector.Connector;
+import org.apache.catalina.core.StandardThreadExecutor;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.coyote.ProtocolHandler;
 import org.apache.coyote.http11.Http11NioProtocol;
+import org.apache.tomcat.util.threads.ThreadPoolExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
@@ -12,9 +15,12 @@ import org.springframework.boot.context.embedded.tomcat.TomcatConnectorCustomize
 import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.stereotype.Component;
 
+import javax.management.*;
+import java.lang.management.ManagementFactory;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Executor;
 
 /**
  * Created by patterncat on 2017-01-04.
@@ -26,6 +32,8 @@ public class EmbeddedServerConfig implements EmbeddedServletContainerCustomizer 
 
     private Map<String,Object> attributes = new HashMap<>();
 
+    private ProtocolHandler protocolHandler;
+
     @Override
     public void customize(ConfigurableEmbeddedServletContainer container) {
         if(container instanceof TomcatEmbeddedServletContainerFactory){
@@ -35,6 +43,8 @@ public class EmbeddedServerConfig implements EmbeddedServletContainerCustomizer 
                 @Override
                 public void customize(Connector connector) {
                     ProtocolHandler handler = connector.getProtocolHandler();
+                    protocolHandler = handler;
+
                     logger.info("handler:{}",handler.getClass().getName());
 
                     //todo test
@@ -47,25 +57,10 @@ public class EmbeddedServerConfig implements EmbeddedServletContainerCustomizer 
 //                    connector.setAttribute("maxConnections",20000);
 
                     logger.info("====== tomcat protocol config start ======");
-//                    Http11NioProtocol http11NioProtocol = (Http11NioProtocol)handler;
-//                    Method[] methods = Http11NioProtocol.class.getMethods();
-//                    for(Method m:methods){
-//                        if(!m.getName().startsWith("get")){
-//                            continue;
-//                        }
-//                        Class<?> methodParams[] = m.getParameterTypes();
-//                        if(methodParams == null || methodParams.length == 0){
-//                            Object value = null;
-//                            try {
-//                                value = m.invoke(http11NioProtocol);
-//                            } catch (Exception e) {
-//                                e.printStackTrace();
-//                            }
-//                            String prop = StringUtils.uncapitalize(m.getName().substring(3));
-//                            logger.info("property:{} value:{}",prop,value);
-//                            attributes.put(prop,value);
-//                        }
-//                    }
+                    Http11NioProtocol http11NioProtocol = (Http11NioProtocol)handler;
+                    Method[] methods = Http11NioProtocol.class.getMethods();
+                    attributes = ReflectHelper.reflectGetProperty(methods,http11NioProtocol);
+
                     logger.info("====== tomcat protocol config end ======");
 
 //                    Object defaultMaxThreads = connector.getAttribute("maxThreads");
@@ -80,5 +75,29 @@ public class EmbeddedServerConfig implements EmbeddedServletContainerCustomizer 
 
     public Map<String, Object> getAttributes() {
         return attributes;
+    }
+
+    public ThreadPoolExecutor getStandardThreadExecutor() {
+        return (ThreadPoolExecutor) protocolHandler.getExecutor();
+    }
+
+
+
+    public void registerMxbean(){
+        //register mbean
+        try {
+            MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
+            ObjectName name = new ObjectName("stat:type=WorkerTheadStat");
+            WorkerTheadMXBean stat = new WorkerTheadStat(getStandardThreadExecutor());
+            mbs.registerMBean(stat, name);
+        } catch (MalformedObjectNameException e) {
+            e.printStackTrace();
+        } catch (NotCompliantMBeanException e) {
+            e.printStackTrace();
+        } catch (InstanceAlreadyExistsException e) {
+            e.printStackTrace();
+        } catch (MBeanRegistrationException e) {
+            e.printStackTrace();
+        }
     }
 }

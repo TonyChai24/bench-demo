@@ -1,5 +1,12 @@
 FROM java8-htop
 ENV JAVA_OPTS="\
+-Dcom.sun.management.jmxremote.rmi.port=9090 \
+-Dcom.sun.management.jmxremote=true \
+-Dcom.sun.management.jmxremote.port=9090 \
+-Dcom.sun.management.jmxremote.ssl=false \
+-Dcom.sun.management.jmxremote.authenticate=false \
+-Dcom.sun.management.jmxremote.local.only=false \
+-Djava.rmi.server.hostname=192.168.99.100 \
 -XX:+UseParallelGC \
 -XX:ParallelGCThreads=4 \
 -XX:+UseParallelOldGC \
@@ -17,4 +24,5 @@ VOLUME /tmp
 ADD bench-demo-0.1.0.jar app.jar
 RUN bash -c 'touch /app.jar'
 EXPOSE 8080
+EXPOSE 9090
 ENTRYPOINT java ${JAVA_OPTS} -Djava.security.egd=file:/dev/./urandom -jar /app.jar
