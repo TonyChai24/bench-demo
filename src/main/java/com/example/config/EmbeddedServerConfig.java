@@ -48,7 +48,7 @@ public class EmbeddedServerConfig implements EmbeddedServletContainerCustomizer 
                     logger.info("handler:{}",handler.getClass().getName());
 
                     //todo test
-                    connector.setAttribute("maxThreads",100);
+//                    connector.setAttribute("maxThreads",100);
 //                    connector.setAttribute("minSpareThreads",200);
 //                    connector.setAttribute("acceptCount",1000);
 //                    connector.setAttribute("keepAliveTimeout",2000);
