@@ -1,4 +1,4 @@
-FROM java8-htop
+FROM java8-htop-pcp
 ENV JAVA_OPTS="\
 -Dcom.sun.management.jmxremote.rmi.port=9090 \
 -Dcom.sun.management.jmxremote=true \
@@ -25,4 +25,11 @@ ADD bench-demo-0.1.0.jar app.jar
 RUN bash -c 'touch /app.jar'
 EXPOSE 8080
 EXPOSE 9090
-ENTRYPOINT java ${JAVA_OPTS} -Djava.security.egd=file:/dev/./urandom -jar /app.jar
+EXPOSE 44321
+EXPOSE 44323
+
+WORKDIR /opt
+COPY entrypoint.sh /opt/entrypoint.sh
+RUN chmod +x entrypoint.sh
+
+ENTRYPOINT ["/opt/entrypoint.sh"]

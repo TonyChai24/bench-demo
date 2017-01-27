@@ -1,9 +1,14 @@
 # bench-demo
 ##docker
 ```
-docker build -t java8-htop .
+docker build -t java8-htop-pcp .
 mvn package -Dmaven.test.skip=true
-docker run -p 8080:8080 -p 9090:9090 --rm -it bench-demo:0.1.0 /bin/bash
+docker run -p 8080:8080 -p 9090:9090 -p 44321:44321 -p 44323:44323 --rm -it bench-demo:0.1.0 /bin/bash
+docker run \
+  -d \
+  --name vector \
+  -p 10080:80 \
+  netflixoss/vector:latest
 ```
 ##jmx
 - [Monitoring Java Applications Running Inside Docker Containers](http://www.jamasoftware.com/blog/monitoring-java-applications/)
